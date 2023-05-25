@@ -62,6 +62,9 @@ export default {
     },
     deleteRow(index) {
         this.rows.splice(index, 1);
+    },
+    createRow() {
+      
     }
   }
 }

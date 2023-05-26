@@ -1,7 +1,6 @@
 <template>
   <div  
   class="row"
-  :class="{editing: row === editing}"
   :id="row.id"
   v-for="(row, index) in rows"
   :key="row.id"
@@ -54,8 +53,7 @@ export default {
           name: 'D'
         }
       ],
-      nextId: 6,
-      editing: null
+      nextId: 6
     }
   },
   methods: {

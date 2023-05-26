@@ -1,10 +1,12 @@
 <template>
   <div  
   class="row"
+  :class="{editing: row === editing}"
+  :id="row.id"
   v-for="(row, index) in rows"
   :key="row.id"
   >
-    <input type="text" :value="row.input">
+    <input type="text" v-model="row.name">
     <div 
     class="dropZone"
     @dragover.prevent
@@ -12,9 +14,9 @@
     >
       <slot></slot>
     </div>
-    <button @click="deleteRow(index)">X</button>
-    <button @click="createRow(index)">+</button>
+    <button @click="deleteRow(index)">x</button>
   </div>
+  <div class="add"><button @click="createRow()">+</button></div>
   <div id="startZone">
     <div 
     class="dropZone"
@@ -25,7 +27,6 @@
     </div>
   </div>
 </template>
-
 <script>
 export default {
   
@@ -33,21 +34,28 @@ export default {
     return {
       rows: [
         {
-          input: 'S'
+          id: 1,
+          name: 'S'
         },
         {
-          input: 'A'
+          id: 2,
+          name: 'A'
         },
         {
-          input: 'B'
+          id: 3,
+          name: 'B'
         },
         {
-          input: 'C'
+          id: 4,
+          name: 'C'
         },
         {
-          input: 'D'
+          id: 5,
+          name: 'D'
         }
-      ]
+      ],
+      nextId: 6,
+      editing: null
     }
   },
   methods: {
@@ -64,13 +72,36 @@ export default {
         this.rows.splice(index, 1);
     },
     createRow() {
-      
+      let id = this.nextId++;
+      let name = prompt('Quelle nom voulez-vous pour la colonne?');
+      if(name == ''){
+        name = prompt('Quelle nom voulez-vous pour la colonne?');
+      } else {
+        this.rows.push({id: id ,name: name });
+      }
     }
   }
 }
 </script>
 
 <style>
+.add{
+  width: 90vw;
+  margin-inline: 2vw;
+  height: 53px;
+}
+.add > button{
+  height: 50px;
+  width: 50px;
+  border-radius: 25px;
+  font-size: x-large;
+  color: white;
+  background-color: rgb(175, 175, 175);
+  border: none;
+}
+.add > button:active{
+  background-color: rgb(70, 70, 70);
+}
 .row{
   min-height: 100px;
   background-color: rgb(175, 175, 175);
@@ -99,8 +130,6 @@ export default {
   background-color: grey;
   color: white;
   font-size: x-large;
-}
-.row > button:last-child{
   border-radius: 0px 20px 20px 0px;
   border-left: 1px solid white;
 }

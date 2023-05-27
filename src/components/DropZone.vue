@@ -1,28 +1,34 @@
 <template>
-  <div  
-  class="row"
-  :id="row.id"
-  v-for="(row, index) in rows"
-  :key="row.id"
-  >
-    <input type="text" v-model="row.name">
-    <div 
-    class="dropZone"
-    @dragover.prevent
-    @drop.prevent="drop"
+  <div id="container">
+    <div  
+    class="row"
+    :id="row.id"
+    v-for="(row, index) in rows"
+    :key="row.id"
     >
-      <slot></slot>
+      <input type="text" v-model="row.name">
+      <div 
+      class="dropZone"
+      @dragover.prevent
+      @drop.prevent="drop"
+      >
+        <slot></slot>
+      </div>
+      <div class="hautBas">
+        <button @click="upRow(index)">↑</button>
+        <button @click="downRow(index)">↓</button>
+      </div>
+      <button @click="deleteRow(index, row.id)">x</button>
     </div>
-    <button @click="deleteRow(index)">x</button>
-  </div>
-  <div class="add"><button @click="createRow()">+</button></div>
-  <div id="startZone">
-    <div 
-    class="dropZone"
-    @dragover.prevent
-    @drop.prevent="drop"
-    >
-    <the-items draggable="true"></the-items>     
+    <div class="add"><button @click="createRow()">+</button></div>
+    <div id="startZone">
+      <div 
+      class="dropZone"
+      @dragover.prevent
+      @drop.prevent="drop"
+      >
+      <the-items draggable="true"></the-items>     
+      </div>
     </div>
   </div>
 </template>
@@ -53,7 +59,7 @@ export default {
           name: 'D'
         }
       ],
-      nextId: 6
+      nextId: 6,
     }
   },
   methods: {
@@ -62,12 +68,15 @@ export default {
 
       const item = document.getElementById(item_id);
 
-      item.style.display = "block";
-
       e.target.appendChild(item);
     },
-    deleteRow(index) {
+    deleteRow(index, id) {
+      let element = document.getElementById(id);
+      let DZ = element.querySelector('.dropZone');
+      let item = DZ.querySelector('.item');
+      if(item == null){
         this.rows.splice(index, 1);
+      }
     },
     createRow() {
       let id = this.nextId++;
@@ -77,12 +86,45 @@ export default {
       } else {
         this.rows.push({id: id ,name: name });
       }
+    },
+    upRow(index) {
+      index = index - 1;
+      if (index >= 0) {
+        let element = this.rows[index]
+        this.rows.splice(index, 1);
+        this.rows.push({ id: element.id, name: element.name });
+        console.dir();
+      }
+    },
+    downRow(index) {
+      if (index < this.rows.length) {
+        let element = this.rows[index]
+        this.rows.splice(index, 1);
+        this.rows.push({ id: element.id, name: element.name });
+        console.dir();
+      }
     }
   }
 }
 </script>
 
 <style>
+.hautBas{
+  text-align: right;
+}
+.hautBas > button:last-child{
+  border-top: 1px solid white ;
+}
+.hautBas > button{
+  height: 50%;
+  background-color: grey;
+  font-size: x-large;
+  color: white;
+  border: none;
+}
+.hautBas > button:active{
+  background-color: rgb(70, 70, 70);
+}
 .add{
   width: 90vw;
   margin-inline: 2vw;
@@ -120,6 +162,7 @@ export default {
 .dropZone{
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   min-height: 100px;
   width: 90vw;
 }
@@ -135,7 +178,10 @@ export default {
   background-color: rgb(70, 70, 70);
 }
 #startZone{
-  margin-inline: 2vw;
+  display:flex;
+  justify-content: center;
+}
+#startZone > .dropZone{
   border: solid 1px;
   border-radius: 20px;
 }

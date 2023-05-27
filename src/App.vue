@@ -5,18 +5,13 @@
 </template>
 
 <script>
-import DropZone from './components/DropZone.vue';
-
-export default {
-  components: {
-    DropZone
-  }
-};
+export default {};
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 *{
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 body{
   text-align: center;

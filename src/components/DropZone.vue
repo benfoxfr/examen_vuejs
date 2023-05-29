@@ -15,7 +15,7 @@
         <slot></slot>
       </div>
       <div class="hautBas">
-        <button @click="upRow(index)">↑</button>
+        <button @click="upRow(index, row.id)">↑</button>
         <button @click="downRow(index)">↓</button>
       </div>
       <button @click="deleteRow(index, row.id)">x</button>
@@ -59,7 +59,7 @@ export default {
           name: 'D'
         }
       ],
-      nextId: 6,
+      nextId: 6
     }
   },
   methods: {
@@ -81,27 +81,32 @@ export default {
     createRow() {
       let id = this.nextId++;
       let name = prompt('Quelle nom voulez-vous pour la colonne?');
-      if(name == ''){
+      if(name == '' || name == ' '){
         name = prompt('Quelle nom voulez-vous pour la colonne?');
       } else {
         this.rows.push({id: id ,name: name });
       }
     },
     upRow(index) {
-      index = index - 1;
-      if (index >= 0) {
-        let element = this.rows[index]
-        this.rows.splice(index, 1);
-        this.rows.push({ id: element.id, name: element.name });
-        console.dir();
+      if (index > 0) {
+        let long = this.rows.length - 2;
+        let element = this.rows[index];
+        let element2 = this.rows[index-1];
+        const partTwo = this.rows.splice(index+1, long);
+        const partOne = this.rows.splice(0, index - 1);
+        this.rows.splice(element, 1);
+        this.rows = [...partOne, element, element2, ...partTwo];
       }
     },
     downRow(index) {
-      if (index < this.rows.length) {
-        let element = this.rows[index]
-        this.rows.splice(index, 1);
-        this.rows.push({ id: element.id, name: element.name });
-        console.dir();
+      if (index < this.rows.length-1) {
+        let long = this.rows.length - 2;
+        let element = this.rows[index];
+        let element2 = this.rows[index+1];
+        const partTwo = this.rows.splice(index+2, long);
+        const partOne = this.rows.splice(0, index );
+        this.rows.splice(element, 1);
+        this.rows = [...partOne, element2, element,...partTwo];
       }
     }
   }
@@ -126,8 +131,6 @@ export default {
   background-color: rgb(70, 70, 70);
 }
 .add{
-  width: 90vw;
-  margin-inline: 2vw;
   height: 53px;
 }
 .add > button{

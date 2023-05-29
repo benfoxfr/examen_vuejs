@@ -34,8 +34,8 @@
 </template>
 <script>
 export default {
-  
-  data(){
+
+  data() {
     return {
       rows: [
         {
@@ -74,43 +74,43 @@ export default {
       let element = document.getElementById(id);
       let DZ = element.querySelector('.dropZone');
       let item = DZ.querySelector('.item');
-      if(item == null){
+      if (item == null) {
         this.rows.splice(index, 1);
       }
     },
     createRow() {
       let id = this.nextId++;
       let name = prompt('Quelle nom voulez-vous pour la colonne?');
-      if(name == '' || name == ' '){
+      if (name == '' || name == ' ') {
         name = prompt('Quelle nom voulez-vous pour la colonne?');
       } else {
-        this.rows.push({id: id ,name: name });
+        this.rows.push({ id: id, name: name });
       }
     },
     upRow(index) {
       if (index > 0) {
         let long = this.rows.length - 2;
         let element = this.rows[index];
-        let element2 = this.rows[index-1];
-        const partTwo = this.rows.splice(index+1, long);
+        let element2 = this.rows[index - 1];
+        const partTwo = this.rows.splice(index + 1, long);
         const partOne = this.rows.splice(0, index - 1);
         this.rows.splice(element, 1);
         this.rows = [...partOne, element, element2, ...partTwo];
       }
     },
     downRow(index) {
-      if (index < this.rows.length-1) {
+      if (index < this.rows.length - 1) {
         let long = this.rows.length - 2;
         let element = this.rows[index];
-        let element2 = this.rows[index+1];
-        const partTwo = this.rows.splice(index+2, long);
-        const partOne = this.rows.splice(0, index );
+        let element2 = this.rows[index + 1];
+        const partTwo = this.rows.splice(index + 2, long);
+        const partOne = this.rows.splice(0, index);
         this.rows.splice(element, 1);
-        this.rows = [...partOne, element2, element,...partTwo];
+        this.rows = [...partOne, element2, element, ...partTwo];
       }
     }
   }
-}
+};
 </script>
 
 <style>
